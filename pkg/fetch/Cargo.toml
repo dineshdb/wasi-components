@@ -1,0 +1,18 @@
+[package]
+name = "fetch"
+license = "MIT"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+serde_json.workspace = true
+spin-executor = "3.0.1"
+spin-sdk = "3.0.1"
+scraper = "0.18.1"
+wit-bindgen-rt.workspace = true
+
+[lib]
+crate-type = ["cdylib"]
+
+[package.metadata.component]
+package = "component:fetch"

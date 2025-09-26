@@ -1,0 +1,5 @@
+[registries.ghcr]
+index = "https://github.com/rust-lang/crates.io-index"
+
+[build]
+target = "wasm32-wasip2"

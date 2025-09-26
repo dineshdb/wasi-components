@@ -1,0 +1,64 @@
+name: Publish WASM Components
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: "Release tag name and version (e.g., v1.0.0)"
+        required: true
+        type: string
+      dry_run:
+        description: "Dry run (do not actually publish)"
+        required: false
+        default: false
+        type: boolean
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: always
+jobs:
+  build-and-publish-wasm:
+    name: Build and Publish WASM Components
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-wasip2
+
+      - name: Install just
+        uses: extractions/setup-just@v2
+
+      - name: Cache cargo registry
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
+      - name: Install tools
+        run: |
+          just install-tools
+      - name: Build and validate
+        run: |
+          just build-all
+      - name: Package
+        env:
+          WKG_OCI_USERNAME: ${{ github.actor }}
+          WKG_OCI_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          wkg oci push ghcr.io/${{github.repository}}/time:${{ github.event.inputs.tag_name }} target/wasm32-wasip2/release/time.wasm
+          wkg oci push ghcr.io/${{github.repository}}/fetch:${{ github.event.inputs.tag_name }} target/wasm32-wasip2/release/fetch.wasm

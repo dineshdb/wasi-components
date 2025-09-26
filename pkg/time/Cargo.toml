@@ -1,0 +1,15 @@
+[package]
+name = "time"
+license = "MIT"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+wit-bindgen-rt.workspace = true
+chrono.workspace = true
+
+[lib]
+crate-type = ["cdylib"]
+
+[package.metadata.component]
+package = "component:time"

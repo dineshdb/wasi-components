@@ -1,0 +1,27 @@
+[workspace]
+members = ["pkg/fetch", "pkg/time"]
+resolver = "2"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+description = "A collection of reusable WASI components for common functionality"
+authors = ["Dinesh Bhattarai <dinesh.db@gmail.com>"]
+license = "MIT"
+keywords = ["wasi", "wasm", "components", "webassembly", "reusable"]
+categories = ["wasm", "development-tools", "web-programming"]
+readme = "README.md"
+
+[workspace.dependencies]
+chrono = { version = "0.4", features = ["serde"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+thiserror = "2.0"
+wit-bindgen-rt = { version = "0.26.0", features = ["bitflags"] }
+
+[profile.release]
+codegen-units = 1
+opt-level = "s"
+debug = false
+strip = true
+lto = true
