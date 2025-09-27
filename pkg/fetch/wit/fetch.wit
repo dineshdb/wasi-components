@@ -2,6 +2,12 @@ package component:fetch;
 
 /// An example world for the component to target.
 world fetch {
-    /// Fetch data from a URL and return the response body as a String
-    export fetch: func(url: string) -> result<string, string>;
+    /// A header name-value pair
+    record header {
+        name: string,
+        value: string,
+    }
+
+    /// Fetch data from a URL with optional headers and return the pure response body as a String
+    export fetch: func(url: string, headers: list<header>) -> result<string, string>;
 }

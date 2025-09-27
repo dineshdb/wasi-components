@@ -1,0 +1,13 @@
+package component:fetch-markdown;
+
+/// An example world for the component to target.
+world fetch-markdown {
+    /// A header name-value pair
+    record header {
+        name: string,
+        value: string,
+    }
+
+    /// Fetch a URL and convert the response to markdown
+    export fetch-as-markdown: func(url: string, headers: list<header>) -> result<string, string>;
+}

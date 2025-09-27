@@ -17,7 +17,7 @@ impl ::core::fmt::Debug for Header {
 }
 #[doc(hidden)]
 #[allow(non_snake_case)]
-pub unsafe fn _export_fetch_cabi<T: Guest>(
+pub unsafe fn _export_fetch_as_markdown_cabi<T: Guest>(
     arg0: *mut u8,
     arg1: usize,
     arg2: *mut u8,
@@ -59,7 +59,7 @@ pub unsafe fn _export_fetch_cabi<T: Guest>(
         len7 * (4 * ::core::mem::size_of::<*const u8>()),
         ::core::mem::size_of::<*const u8>(),
     );
-    let result8 = T::fetch(_rt::string_lift(bytes0), result7);
+    let result8 = T::fetch_as_markdown(_rt::string_lift(bytes0), result7);
     let ptr9 = (&raw mut _RET_AREA.0).cast::<u8>();
     match result8 {
         Ok(e) => {
@@ -93,7 +93,7 @@ pub unsafe fn _export_fetch_cabi<T: Guest>(
 }
 #[doc(hidden)]
 #[allow(non_snake_case)]
-pub unsafe fn __post_return_fetch<T: Guest>(arg0: *mut u8) {
+pub unsafe fn __post_return_fetch_as_markdown<T: Guest>(arg0: *mut u8) {
     let l0 = i32::from(*arg0.add(0).cast::<u8>());
     match l0 {
         0 => {
@@ -117,22 +117,26 @@ pub unsafe fn __post_return_fetch<T: Guest>(arg0: *mut u8) {
     }
 }
 pub trait Guest {
-    /// Fetch data from a URL with optional headers and return the pure response body as a String
-    fn fetch(url: _rt::String, headers: _rt::Vec<Header>) -> Result<_rt::String, _rt::String>;
+    /// Fetch a URL and convert the response to markdown
+    fn fetch_as_markdown(
+        url: _rt::String,
+        headers: _rt::Vec<Header>,
+    ) -> Result<_rt::String, _rt::String>;
 }
 #[doc(hidden)]
-macro_rules! __export_world_fetch_cabi {
+macro_rules! __export_world_fetch_markdown_cabi {
     ($ty:ident with_types_in $($path_to_types:tt)*) => {
-        const _ : () = { #[unsafe (export_name = "fetch")] unsafe extern "C" fn
-        export_fetch(arg0 : * mut u8, arg1 : usize, arg2 : * mut u8, arg3 : usize,) -> *
-        mut u8 { unsafe { $($path_to_types)*:: _export_fetch_cabi::<$ty > (arg0, arg1,
-        arg2, arg3) } } #[unsafe (export_name = "cabi_post_fetch")] unsafe extern "C" fn
-        _post_return_fetch(arg0 : * mut u8,) { unsafe { $($path_to_types)*::
-        __post_return_fetch::<$ty > (arg0) } } };
+        const _ : () = { #[unsafe (export_name = "fetch-as-markdown")] unsafe extern "C"
+        fn export_fetch_as_markdown(arg0 : * mut u8, arg1 : usize, arg2 : * mut u8, arg3
+        : usize,) -> * mut u8 { unsafe { $($path_to_types)*::
+        _export_fetch_as_markdown_cabi::<$ty > (arg0, arg1, arg2, arg3) } } #[unsafe
+        (export_name = "cabi_post_fetch-as-markdown")] unsafe extern "C" fn
+        _post_return_fetch_as_markdown(arg0 : * mut u8,) { unsafe { $($path_to_types)*::
+        __post_return_fetch_as_markdown::<$ty > (arg0) } } };
     };
 }
 #[doc(hidden)]
-pub(crate) use __export_world_fetch_cabi;
+pub(crate) use __export_world_fetch_markdown_cabi;
 #[cfg_attr(target_pointer_width = "64", repr(align(8)))]
 #[cfg_attr(target_pointer_width = "32", repr(align(4)))]
 struct _RetArea([::core::mem::MaybeUninit<u8>; 3 * ::core::mem::size_of::<*const u8>()]);
@@ -182,27 +186,28 @@ mod _rt {
 /// ```
 #[allow(unused_macros)]
 #[doc(hidden)]
-macro_rules! __export_fetch_impl {
+macro_rules! __export_fetch_markdown_impl {
     ($ty:ident) => {
         self::export!($ty with_types_in self);
     };
     ($ty:ident with_types_in $($path_to_types_root:tt)*) => {
-        $($path_to_types_root)*:: __export_world_fetch_cabi!($ty with_types_in
+        $($path_to_types_root)*:: __export_world_fetch_markdown_cabi!($ty with_types_in
         $($path_to_types_root)*);
     };
 }
 #[doc(inline)]
-pub(crate) use __export_fetch_impl as export;
+pub(crate) use __export_fetch_markdown_impl as export;
 #[cfg(target_arch = "wasm32")]
-#[unsafe(link_section = "component-type:wit-bindgen:0.41.0:component:fetch:fetch:encoded world")]
+#[unsafe(link_section = "component-type:wit-bindgen:0.41.0:component:fetch-markdown:fetch-markdown:encoded world")]
 #[doc(hidden)]
 #[allow(clippy::octal_escapes)]
-pub static __WIT_BINDGEN_COMPONENT_TYPE: [u8; 221] = *b"\
-\0asm\x0d\0\x01\0\0\x19\x16wit-component-encoding\x04\0\x07b\x01A\x02\x01A\x06\x01\
-r\x02\x04names\x05values\x03\0\x06header\x03\0\0\x01p\x01\x01j\x01s\x01s\x01@\x02\
-\x03urls\x07headers\x02\0\x03\x04\0\x05fetch\x01\x04\x04\0\x15component:fetch/fe\
-tch\x04\0\x0b\x0b\x01\0\x05fetch\x03\0\0\0G\x09producers\x01\x0cprocessed-by\x02\
-\x0dwit-component\x070.227.1\x10wit-bindgen-rust\x060.41.0";
+pub static __WIT_BINDGEN_COMPONENT_TYPE: [u8; 261] = *b"\
+\0asm\x0d\0\x01\0\0\x19\x16wit-component-encoding\x04\0\x07\x80\x01\x01A\x02\x01\
+A\x06\x01r\x02\x04names\x05values\x03\0\x06header\x03\0\0\x01p\x01\x01j\x01s\x01\
+s\x01@\x02\x03urls\x07headers\x02\0\x03\x04\0\x11fetch-as-markdown\x01\x04\x04\0\
+'component:fetch-markdown/fetch-markdown\x04\0\x0b\x14\x01\0\x0efetch-markdown\x03\
+\0\0\0G\x09producers\x01\x0cprocessed-by\x02\x0dwit-component\x070.227.1\x10wit-\
+bindgen-rust\x060.41.0";
 #[inline(never)]
 #[doc(hidden)]
 pub fn __link_custom_section_describing_imports() {
