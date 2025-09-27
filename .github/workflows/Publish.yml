@@ -1,11 +1,13 @@
 name: Publish WASM Components
 
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
     inputs:
       tag_name:
         description: "Release tag name and version (e.g., v1.0.0)"
-        required: true
+        required: false
         type: string
       dry_run:
         description: "Dry run (do not actually publish)"
@@ -52,15 +54,53 @@ jobs:
       - name: Install tools
         run: |
           just install-tools
-      - name: Build and validate
+      
+      - name: Run linting checks
+        run: |
+          just lint
+      
+      - name: Build components
         run: |
           just build
-      - name: Package
+      
+      - name: Validate WASM components
+        run: |
+          just validate-wasm
+      
+      - name: Extract WIT interfaces
+        run: |
+          just extract-wit
+      - name: Get component list
+        id: get-components
+        run: |
+          components=$(ls pkg/ | tr '\n' ' ')
+          echo "components=$components" >> $GITHUB_OUTPUT
+          echo "Found components: $components"
+
+      - name: Package components
+        if: success()  # Only run if all previous steps succeeded
         env:
           WKG_OCI_USERNAME: ${{ github.actor }}
           WKG_OCI_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          wkg oci push ghcr.io/${{github.repository}}/context7:${{ github.event.inputs.tag_name }} target/wasm32-wasip2/release/context7.wasm
-          wkg oci push ghcr.io/${{github.repository}}/fetch:${{ github.event.inputs.tag_name }} target/wasm32-wasip2/release/fetch.wasm
-          wkg oci push ghcr.io/${{github.repository}}/filesystem:${{ github.event.inputs.tag_name }} target/wasm32-wasip2/release/filesystem.wasm
-          wkg oci push ghcr.io/${{github.repository}}/time:${{ github.event.inputs.tag_name }} target/wasm32-wasip2/release/time.wasm
+          # Determine tag based on trigger type
+          if [ "${{ github.event_name }}" == "push" ]; then
+            TAG="latest"
+            echo "🚀 Publishing components with 'latest' tag (push to main)"
+          elif [ -n "${{ github.event.inputs.tag_name }}" ]; then
+            TAG="${{ github.event.inputs.tag_name }}"
+            echo "🏷️  Publishing components with version tag: $TAG"
+          else
+            TAG="latest"
+            echo "🚀 Publishing components with 'latest' tag (manual dispatch without version)"
+          fi
+
+          for component in ${{ steps.get-components.outputs.components }}; do
+            echo "Publishing component: $component"
+            if [ -f "target/wasm32-wasip2/release/$component.wasm" ]; then
+              wkg oci push ghcr.io/${{github.repository}}/$component:$TAG target/wasm32-wasip2/release/$component.wasm
+              echo "✅ Successfully published $component:$TAG"
+            else
+              echo "⚠️  Warning: WASM file not found for component $component"
+            fi
+          done

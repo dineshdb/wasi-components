@@ -3,6 +3,9 @@
 A collection of reusable WASI (WebAssembly System Interface) components for
 common functionality.
 
+You can use [wasic](https://github.com/dineshdb/wasic), wasmtime or any runtime that supports wasi for running
+these wasi components.
+
 ## Overview
 
 This repository contains high-quality, production-ready WASM components that can
