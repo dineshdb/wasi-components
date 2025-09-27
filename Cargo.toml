@@ -5,6 +5,7 @@ members = [
     "pkg/fetch_markdown",
     "pkg/filesystem",
     "pkg/markdown",
+    "pkg/myip",
     "pkg/time",
 ]
 resolver = "2"
