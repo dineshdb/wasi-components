@@ -1,3 +1,7 @@
+gen:
+	cargo component bindings
+	cargo fmt --all
+
 build:
 	cargo fmt --all
 	cargo build --workspace --release

@@ -1,5 +1,5 @@
 [workspace]
-members = ["pkg/fetch", "pkg/filesystem", "pkg/time"]
+members = ["pkg/context7", "pkg/fetch", "pkg/filesystem", "pkg/time"]
 resolver = "2"
 
 [workspace.package]

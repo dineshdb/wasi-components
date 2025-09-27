@@ -1,0 +1,16 @@
+profiles:
+  default:
+    components:
+      time:
+        path: target/wasm32-wasip2/release/time.wasm
+      fetch:
+        path: target/wasm32-wasip2/release/fetch.wasm
+      context7:
+        path: target/wasm32-wasip2/release/context7.wasm
+      fs:
+        path: target/wasm32-wasip2/release/filesystem.wasm
+        cwd: /Users/dineshbhattarai/src/
+        volumes:
+          - host_path: "/tmp"
+            guest_path: "/tmp"
+            read_only: false
