@@ -53,7 +53,7 @@ jobs:
 
       - name: Build WASM components
         run: |
-          just build-all
+          just build
 
       - name: Validate WASM components
         run: |

@@ -1,10 +1,13 @@
 # wasic-components
 
-A collection of reusable WASI (WebAssembly System Interface) components for common functionality.
+A collection of reusable WASI (WebAssembly System Interface) components for
+common functionality.
 
 ## Overview
 
-This repository contains high-quality, production-ready WASM components that can be used in various WebAssembly applications and runtimes. Each component is designed to be:
+This repository contains high-quality, production-ready WASM components that can
+be used in various WebAssembly applications and runtimes. Each component is
+designed to be:
 
 - **Reusable**: Works across different WASI runtimes and environments
 - **Secure**: Built with WASI's security model in mind
@@ -13,47 +16,9 @@ This repository contains high-quality, production-ready WASM components that can
 
 ## Available Components
 
-### Time Component (`component:time`)
-
-A simple component for getting the current time.
-
-- **Function**: `get-current-time() -> string`
-- **Returns**: Current UTC time as ISO 8601 formatted string
-- **Dependencies**: Minimal (only chrono for time handling)
-- **Use case**: Timestamp generation, logging, scheduling
-
-#### Usage Example
-
-```rust
-// In your WIT file
-use component:time/time;
-
-// The component provides:
-// get-current-time: func() -> string
-```
-
-### Fetch Component (`component:fetch`)
-
-A component for making HTTP requests and processing responses.
-
-- **Function**: `fetch(url: string) -> result<string, string>`
-- **Returns**: HTTP response content, automatically converted to markdown for HTML/JSON
-- **Dependencies**: Spin SDK for HTTP functionality
-- **Features**: 
-  - Automatic content-type detection
-  - HTML to markdown conversion
-  - JSON to markdown formatting
-  - Error handling for HTTP status codes
-
-#### Usage Example
-
-```rust
-// In your WIT file
-use component:fetch/fetch;
-
-// The component provides:
-// fetch: func(url: string) -> result<string, string>
-```
+- Fetch Component, copied from wassette
+- Filesystem Component, copied from wassette
+- Time Component
 
 ## Building Components
 
@@ -78,7 +43,7 @@ cargo install wasm-tools
 
 ```bash
 # Build all components
-just build-all
+just build
 
 # Or using cargo directly
 cargo build --target wasm32-wasip2 --release --workspace
@@ -239,7 +204,8 @@ All components follow these standards:
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the LICENSE file for
+details.
 
 ## Contributing
 
@@ -252,8 +218,10 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Versioning
 
-Components follow semantic versioning. All components in a workspace share the same version number defined in the workspace `Cargo.toml`.
+Components follow semantic versioning. All components in a workspace share the
+same version number defined in the workspace `Cargo.toml`.
 
 ## Examples
 
-See the `examples/` directory for usage examples of each component in different contexts and runtimes.
+See the `examples/` directory for usage examples of each component in different
+contexts and runtimes.

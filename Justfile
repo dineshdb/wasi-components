@@ -1,4 +1,4 @@
-build-all:
+build:
 	cargo fmt --all
 	cargo build --workspace --release
 
@@ -12,13 +12,12 @@ lint-fix:
 	cargo clippy --fix --allow-dirty --allow-staged
 	cargo sort
 	cargo machete
-	just lint
 
 test-verbose:
 	cargo test --workspace -- --nocapture
 
 # WASM component validation
-validate-wasm: build-all
+validate-wasm: build
 	@echo "Validating WASM components..."
 	wasm-tools validate target/wasm32-wasip2/release/time.wasm
 	wasm-tools validate target/wasm32-wasip2/release/fetch.wasm
@@ -67,7 +66,7 @@ ci: lint validate-wasm extract-wit
 	@echo "✅ All CI checks passed"
 
 # Development workflow
-dev: build-all validate-wasm extract-wit
+dev: build validate-wasm extract-wit
 	@echo "✅ Development build complete"
 
 # Release preparation
@@ -81,7 +80,7 @@ docs:
 	@echo "✅ Documentation generated"
 
 # Quick test (build + basic validation)
-quick-test: build-all validate-wasm
+quick-test: build validate-wasm
 	@echo "✅ Quick test passed"
 
 # Full test suite
@@ -89,11 +88,11 @@ full-test: ci
 	@echo "✅ Full test suite passed"
 
 # Setup for new developers
-setup: install-tools build-all
+setup: install-tools build
 	@echo "✅ Development environment setup complete"
 
 # Component size analysis
-analyze-size: build-all
+analyze-size: build
 	@echo "Analyzing component sizes..."
 	@echo "Time component:"
 	wc -c target/wasm32-wasip2/release/time.wasm

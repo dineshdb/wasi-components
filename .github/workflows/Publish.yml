@@ -54,7 +54,7 @@ jobs:
           just install-tools
       - name: Build and validate
         run: |
-          just build-all
+          just build
       - name: Package
         env:
           WKG_OCI_USERNAME: ${{ github.actor }}
@@ -62,3 +62,4 @@ jobs:
         run: |
           wkg oci push ghcr.io/${{github.repository}}/time:${{ github.event.inputs.tag_name }} target/wasm32-wasip2/release/time.wasm
           wkg oci push ghcr.io/${{github.repository}}/fetch:${{ github.event.inputs.tag_name }} target/wasm32-wasip2/release/fetch.wasm
+          wkg oci push ghcr.io/${{github.repository}}/filesystem:${{ github.event.inputs.tag_name }} target/wasm32-wasip2/release/filesystem.wasm
