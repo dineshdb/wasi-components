@@ -54,19 +54,19 @@ jobs:
       - name: Install tools
         run: |
           just install-tools
-      
+
       - name: Run linting checks
         run: |
           just lint
-      
+
       - name: Build components
         run: |
           just build
-      
+
       - name: Validate WASM components
         run: |
           just validate-wasm
-      
+
       - name: Extract WIT interfaces
         run: |
           just extract-wit
@@ -78,7 +78,7 @@ jobs:
           echo "Found components: $components"
 
       - name: Package components
-        if: success()  # Only run if all previous steps succeeded
+        if: success() # Only run if all previous steps succeeded
         env:
           WKG_OCI_USERNAME: ${{ github.actor }}
           WKG_OCI_PASSWORD: ${{ secrets.GITHUB_TOKEN }}

@@ -1,10 +1,10 @@
-# wasic-components
+# wasi-components
 
 A collection of reusable WASI (WebAssembly System Interface) components for
 common functionality.
 
-You can use [wasic](https://github.com/dineshdb/wasic), wasmtime or any runtime that supports wasi for running
-these wasi components.
+You can use [wasmic](https://github.com/dineshdb/wasmic), wasmtime or any
+runtime that supports wasi for running these wasi components.
 
 ## Overview
 
@@ -155,7 +155,7 @@ just ci
 ### Project Structure
 
 ```
-wasic-components/
+wasi-components/
 ├── pkg/
 │   ├── time/          # Time component
 │   │   ├── src/

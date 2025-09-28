@@ -1,6 +1,7 @@
 # Brave Search Plugin
 
-A WASI component plugin that provides web search functionality using the Brave Search API.
+A WASI component plugin that provides web search functionality using the Brave
+Search API.
 
 ## Features
 
@@ -13,7 +14,8 @@ A WASI component plugin that provides web search functionality using the Brave S
 
 ### Prerequisites
 
-1. Get a Brave Search API key from [Brave Search API](https://api.search.brave.com/)
+1. Get a Brave Search API key from
+   [Brave Search API](https://api.search.brave.com/)
 2. Set the API key as an environment variable:
    ```bash
    export BRAVE_SEARCH_API_KEY=your_api_key_here
@@ -21,7 +23,8 @@ A WASI component plugin that provides web search functionality using the Brave S
 
 ### API
 
-The plugin provides a single function `search` that takes search parameters and returns search results.
+The plugin provides a single function `search` that takes search parameters and
+returns search results.
 
 #### Search Parameters
 
