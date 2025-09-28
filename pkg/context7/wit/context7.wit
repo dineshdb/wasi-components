@@ -1,6 +1,5 @@
 package component:context7;
 
-/// An example world for the component to target.
 world context7 {
     /// Fetch data from a URL and return the response body as a String
     export c7-resolve-library-id: func(library-name: string) -> result<string, string>;

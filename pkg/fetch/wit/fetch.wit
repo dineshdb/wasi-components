@@ -1,6 +1,5 @@
 package component:fetch;
 
-/// An example world for the component to target.
 world fetch {
     /// A header name-value pair
     record header {

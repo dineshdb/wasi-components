@@ -1,0 +1,45 @@
+package component:brave-search;
+
+/// Brave Search component for web search functionality
+world brave-search {
+    /// Search query parameters
+    record search-params {
+        /// The search query string
+        query: string,
+        /// Number of results to return (default: 10, max: 20)
+        limit: u32,
+        /// Country code for results (e.g., "US", "GB", etc.)
+        country: string,
+        /// Language code for results (e.g., "en", "es", etc.)
+        language: string,
+        /// Safe search setting ("off", "moderate", "strict")
+        safe-search: string,
+        /// Whether to include text from web pages
+        include-text: bool,
+    }
+
+    /// Individual search result
+    record search-result {
+        /// The title of the search result
+        title: string,
+        /// The URL of the search result
+        url: string,
+        /// A snippet/description of the search result
+        description: string,
+        /// Text content from the page (if requested)
+        text: option<string>,
+    }
+
+    /// Search response containing results
+    record search-response {
+        /// List of search results
+        results: list<search-result>,
+        /// Total number of results available
+        total-results: u32,
+        /// Query that was executed
+        query: string,
+    }
+
+    /// Perform a web search using Brave Search API
+    export search: func(params: search-params) -> result<search-response, string>;
+}

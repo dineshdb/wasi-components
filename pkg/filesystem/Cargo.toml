@@ -4,12 +4,12 @@ license.workspace = true
 version.workspace = true
 edition.workspace = true
 
-[dependencies]
-anyhow.workspace = true
-wit-bindgen-rt.workspace = true
+[package.metadata.component]
+package = "component:filesystem"
 
 [lib]
 crate-type = ["cdylib"]
 
-[package.metadata.component]
-package = "component:filesystem"
+[dependencies]
+anyhow.workspace = true
+wit-bindgen-rt.workspace = true

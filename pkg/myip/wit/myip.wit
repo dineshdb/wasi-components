@@ -1,6 +1,5 @@
 package component:myip;
 
-/// An example world for the component to target.
 world myip {
     /// Get the current IP address
     export get-ip: func() -> result<string, string>;

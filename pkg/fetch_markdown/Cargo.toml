@@ -3,15 +3,15 @@ name = "fetch-markdown"
 version.workspace = true
 edition.workspace = true
 
+[package.metadata.component]
+package = "component:fetch-markdown"
+
 [lib]
 crate-type = ["cdylib"]
 
 [dependencies]
+scraper = "0.18"
+serde_json.workspace = true
 spin-executor.workspace = true
 spin-sdk.workspace = true
-serde_json.workspace = true
-scraper = "0.18"
 wit-bindgen-rt.workspace = true
-
-[package.metadata.component]
-package = "component:fetch-markdown"

@@ -1,6 +1,5 @@
 package component:markdown;
 
-/// An example world for the component to target.
 world markdown {
     /// Convert HTML content to markdown format
     export html-to-markdown: func(html: string) -> string;

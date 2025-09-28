@@ -1,15 +1,19 @@
 [package]
-name = "time"
+name = "brave-search"
 license = "MIT"
 version.workspace = true
 edition.workspace = true
 
 [package.metadata.component]
-package = "component:time"
+package = "component:brave-search"
 
 [lib]
 crate-type = ["cdylib"]
 
 [dependencies]
-chrono.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+spin-executor = "3.0.1"
+spin-sdk = "3.0.1"
+urlencoding = "2.1"
 wit-bindgen-rt.workspace = true

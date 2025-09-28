@@ -1,6 +1,5 @@
 package component:filesystem;
 
-/// An example world for the component to target.
 world fs {
     /// Get a detailed listing of all files and directories in a specified path.
     /// Results clearly distinguish between files and directories with [FILE] and [DIR] \

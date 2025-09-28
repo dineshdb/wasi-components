@@ -1,6 +1,5 @@
 package component:fetch-markdown;
 
-/// An example world for the component to target.
 world fetch-markdown {
     /// A header name-value pair
     record header {

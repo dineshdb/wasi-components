@@ -1,5 +1,6 @@
 [workspace]
 members = [
+    "pkg/brave_search",
     "pkg/context7",
     "pkg/fetch",
     "pkg/fetch_markdown",

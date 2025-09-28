@@ -14,7 +14,7 @@ lint-fix:
 	cargo component bindings
 	cargo fmt --all
 	cargo clippy --fix --allow-dirty --allow-staged
-	cargo sort
+	cargo sort --workspace
 	cargo machete
 
 test-verbose:

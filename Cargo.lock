@@ -54,6 +54,18 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2261d10cca569e4643e526d8dc2e62e433cc8aba21ab764233731f8d369bf394"
 
 [[package]]
+name = "brave-search"
+version = "0.1.0"
+dependencies = [
+ "serde",
+ "serde_json",
+ "spin-executor",
+ "spin-sdk",
+ "urlencoding",
+ "wit-bindgen-rt",
+]
+
+[[package]]
 name = "bumpalo"
 version = "3.19.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -834,6 +846,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "80ece43fc6fbed4eb5392ab50c07334d3e577cbf40997ee896fe7af40bba4245"
 dependencies = [
  "serde_core",
+ "serde_derive",
 ]
 
 [[package]]

@@ -4,15 +4,15 @@ license = "MIT"
 version.workspace = true
 edition.workspace = true
 
-[dependencies]
-serde_json.workspace = true
-spin-executor = "3.0.1"
-spin-sdk = "3.0.1"
-wit-bindgen-rt.workspace = true
-urlencoding = "*"
+[package.metadata.component]
+package = "component:context7"
 
 [lib]
 crate-type = ["cdylib"]
 
-[package.metadata.component]
-package = "component:context7"
+[dependencies]
+serde_json.workspace = true
+spin-executor = "3.0.1"
+spin-sdk = "3.0.1"
+urlencoding = "*"
+wit-bindgen-rt.workspace = true

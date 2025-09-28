@@ -1,6 +1,5 @@
 package component:time;
 
-/// An example world for the component to target.
 world time {
     /// Get the current date and time as a formatted string
     /// Returns the current timestamp in ISO 8601 format
