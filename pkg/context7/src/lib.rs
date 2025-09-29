@@ -9,13 +9,22 @@ use bindings::Guest;
 
 struct Component;
 
-const CONTEXT7_API_BASE_URL: &str = "https://context7.com/api";
+const BASE_URL: &str = "https://context7.com/api";
+
+// Helper function to create a request with redirect following
+fn create_request(url: &str) -> Request {
+    Request::get(url)
+        .header("User-Agent", "Context7-MCP-Server/1.0")
+        .header("Accept", "application/json")
+        .header("X-Context7-Source", "mcp-server")
+        .build()
+}
 impl Guest for Component {
     fn c7_resolve_library_id(library_name_as_query: String) -> Result<String, String> {
         spin_executor::run(async move {
             let encoded_query = encode(&library_name_as_query);
-            let url = format!("{CONTEXT7_API_BASE_URL}/v1/search?query={encoded_query}",);
-            let request = Request::get(url);
+            let url = format!("{BASE_URL}/v1/search?query={encoded_query}",);
+            let request = create_request(&url);
             let response: Response = send(request).await.map_err(|e| e.to_string())?;
             let status = response.status();
             if !(200..300).contains(status) {
@@ -104,6 +113,66 @@ impl Guest for Component {
             let final_text = format!("{}{}", header, results_text_parts.join("\n\n"));
 
             Ok(final_text)
+        })
+    }
+
+    fn c7_get_library_docs(
+        context7_compatible_library_id: String,
+        topic: String,
+        tokens: u32,
+    ) -> Result<String, String> {
+        spin_executor::run(async move {
+            let mut id_for_path = context7_compatible_library_id.clone();
+            let mut folders_value_opt: Option<String> = None;
+
+            if let Some(idx) = context7_compatible_library_id.rfind("?folders=") {
+                let (id_part, folders_part_with_query) =
+                    context7_compatible_library_id.split_at(idx);
+                id_for_path = id_part.to_string();
+                folders_value_opt = Some(
+                    folders_part_with_query
+                        .trim_start_matches("?folders=")
+                        .to_string(),
+                );
+            }
+
+            let mut query_params_vec = vec![format!(
+                "context7CompatibleLibraryID={}",
+                encode(&context7_compatible_library_id) // Use the original, full ID string for this query parameter
+            )];
+
+            if let Some(folders_val) = &folders_value_opt
+                && !folders_val.is_empty()
+            {
+                query_params_vec.push(format!("folders={}", encode(folders_val)));
+            }
+
+            if !topic.is_empty() {
+                query_params_vec.push(format!("topic={}", encode(&topic)));
+            }
+
+            if tokens > 0 {
+                query_params_vec.push(format!("tokens={}", tokens));
+            }
+
+            let query_params = query_params_vec.join("&");
+            let url = format!("{BASE_URL}/v1{id_for_path}?{query_params}",);
+            let req = create_request(&url);
+
+            match send::<_, spin_sdk::http::Response>(req).await {
+                Ok(response) => {
+                    let status = response.status();
+                    let body_str = String::from_utf8_lossy(response.body()).to_string();
+                    if (200..300).contains(status) {
+                        Ok(body_str)
+                    } else {
+                        Err(format!(
+                            "API request for docs (URL: {url}) failed with status {status}: {body_str}",
+                        ))
+                    }
+                }
+                Err(e) => Err(format!("HTTP request for docs failed: {e}, URL: {url}")),
+            }
         })
     }
 }

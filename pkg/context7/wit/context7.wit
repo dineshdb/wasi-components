@@ -1,6 +1,10 @@
 package component:context7;
 
 world context7 {
+    type markdown = string;
     /// Fetch data from a URL and return the response body as a String
     export c7-resolve-library-id: func(library-name: string) -> result<string, string>;
+
+    /// Get library documentation from Context7 API
+    export c7-get-library-docs: func(context7-compatible-library-id: string, topic: string, tokens: u32) -> result<markdown, string>;
 }
