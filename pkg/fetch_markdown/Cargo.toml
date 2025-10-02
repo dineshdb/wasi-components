@@ -10,8 +10,6 @@ package = "component:fetch-markdown"
 crate-type = ["cdylib"]
 
 [dependencies]
-scraper = "0.18"
-serde_json.workspace = true
+common.workspace = true
 spin-executor.workspace = true
-spin-sdk.workspace = true
 wit-bindgen-rt.workspace = true

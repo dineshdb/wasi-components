@@ -10,6 +10,5 @@ package = "component:markdown"
 crate-type = ["cdylib"]
 
 [dependencies]
-scraper = "0.18"
-serde_json.workspace = true
+common.workspace = true
 wit-bindgen-rt.workspace = true

@@ -11,6 +11,6 @@ package = "component:fetch"
 crate-type = ["cdylib"]
 
 [dependencies]
+common.workspace = true
 spin-executor = "3.0.1"
-spin-sdk = "3.0.1"
 wit-bindgen-rt.workspace = true

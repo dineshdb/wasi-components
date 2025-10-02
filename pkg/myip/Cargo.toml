@@ -11,6 +11,6 @@ package = "component:myip"
 crate-type = ["cdylib"]
 
 [dependencies]
-spin-executor = "3.0.1"
-spin-sdk = "3.0.1"
+common.workspace = true
+spin-executor.workspace = true
 wit-bindgen-rt.workspace = true

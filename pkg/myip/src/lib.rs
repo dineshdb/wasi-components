@@ -1,4 +1,5 @@
-use spin_sdk::http::{Request, Response, send};
+use common::get;
+use std::collections::HashMap;
 
 #[allow(warnings)]
 mod bindings;
@@ -10,14 +11,9 @@ struct Component;
 impl Guest for Component {
     fn get_ip() -> Result<String, String> {
         spin_executor::run(async move {
-            let mut request = Request::get("https://1.1.1.1/cdn-cgi/trace");
-            let response: Response = send(request.build()).await.map_err(|e| e.to_string())?;
-
-            let status = response.status();
-            if !(200..300).contains(status) {
-                return Err(format!("Request failed with status code: {status}"));
-            }
-
+            let response = get("https://1.1.1.1/cdn-cgi/trace", &HashMap::new())
+                .await
+                .map_err(|e| e.to_string())?;
             let body = String::from_utf8_lossy(response.body());
             let text = body.into_owned();
 

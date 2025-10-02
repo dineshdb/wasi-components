@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-use spin_sdk::http::{Request, Response, send};
+use common::get;
+use std::collections::HashMap;
 
 #[allow(warnings)]
 mod bindings;
@@ -13,18 +14,10 @@ struct Component;
 impl Guest for Component {
     fn fetch(url: String, headers: Vec<bindings::Header>) -> Result<String, String> {
         spin_executor::run(async move {
-            let mut request = Request::get(url);
-            for header in headers {
-                request.header(header.name.clone().as_str(), header.value.as_str());
-            }
-
-            let response: Response = send(request.build()).await.map_err(|e| e.to_string())?;
-            let status = response.status();
-            if !(200..300).contains(status) {
-                return Err(format!("Request failed with status code: {status}"));
-            }
-            let body = String::from_utf8_lossy(response.body());
-            Ok(body.into_owned())
+            let headers: HashMap<String, String> =
+                headers.into_iter().map(|h| (h.name, h.value)).collect();
+            let response = get(&url, &headers).await.map_err(|e| e.to_string())?;
+            Ok(String::from_utf8_lossy(response.body()).to_string())
         })
     }
 }
