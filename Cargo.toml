@@ -8,6 +8,7 @@ members = [
     "pkg/filesystem",
     "pkg/markdown",
     "pkg/myip",
+    "pkg/ollama",
     "pkg/time",
 ]
 resolver = "2"

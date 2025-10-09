@@ -2,7 +2,12 @@ use spin_sdk::http::{Method as SMethod, Request, Response, send};
 use std::collections::HashMap;
 
 pub async fn get(url: &str, headers: &HashMap<String, String>) -> anyhow::Result<Response> {
-    let response: Response = fetch(url, Method::Get, headers)
+    let mut request = Request::get(url);
+    for (name, value) in headers {
+        request.header(name, value);
+    }
+
+    let response: Response = send(request.build())
         .await
         .map_err(|e| anyhow::anyhow!("error sending request: {e}"))?;
     let status = response.status();
@@ -35,12 +40,23 @@ pub async fn fetch(
     method: Method,
     headers: &HashMap<String, String>,
 ) -> anyhow::Result<Response> {
-    let mut request = Request::new(method.into(), url);
+    match method {
+        Method::Get => get(url, headers).await,
+        _ => Err(anyhow::anyhow!("Unsupported method for fetch without body")),
+    }
+}
+
+pub async fn post_json(
+    url: &str,
+    headers: &HashMap<String, String>,
+    body: Vec<u8>,
+) -> anyhow::Result<Response> {
+    let mut request = Request::post(url, body);
     for (name, value) in headers {
-        request.set_header(name, value);
+        request.header(name, value);
     }
 
-    let response: Response = send(request)
+    let response: Response = send(request.build())
         .await
         .map_err(|e| anyhow::anyhow!("error sending request: {e}"))?;
     let status = response.status();

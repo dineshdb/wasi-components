@@ -1,0 +1,23 @@
+package component:ollama;
+
+world ollama {
+    /// A search result containing title, URL, and content
+    record search-result {
+        title: string,
+        url: string,
+        content: string,
+    }
+
+    /// A fetch result containing title, content, and links
+    record fetch-result {
+        title: string,
+        content: string,
+        links: list<string>,
+    }
+
+    /// Search the web using Ollama's web search API
+    export search: func(query: string, max-results: u32) -> result<list<search-result>, string>;
+
+    /// Fetch content from a URL using Ollama's web fetch API
+    export fetch: func(url: string) -> result<fetch-result, string>;
+}
