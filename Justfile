@@ -15,7 +15,7 @@ lint-fix:
 	cargo fmt --all
 	cargo clippy --fix --allow-dirty --allow-staged
 	cargo sort --workspace
-	cargo machete
+	cargo machete --fix
 
 test-verbose:
 	cargo test --workspace -- --nocapture
@@ -102,3 +102,10 @@ analyze-size: build
 	wc -c target/wasm32-wasip2/release/time.wasm
 	@echo "Fetch component:"
 	wc -c target/wasm32-wasip2/release/fetch.wasm
+
+ddg query:
+	wasmic call --config config.yaml --function "ddg.search" --args '{"query": "{{query}}"}'
+
+
+search:
+	wasmic call --config config.yaml --function "brave-search.search" --args '{"query": "AI news artificial intelligence latest developments"}'

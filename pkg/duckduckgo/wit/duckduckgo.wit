@@ -1,0 +1,36 @@
+package component:duckduckgo-search;
+
+/// DuckDuckGo Search component for web search functionality
+world duckduckgo-search {
+    /// Individual search result
+    record search-result {
+        /// The title of the search result
+        title: string,
+        /// The URL of the search result
+        url: string,
+        /// A snippet/description of the search result
+        description: string,
+    }
+
+    /// Search response containing structured results
+    record search-response {
+        /// List of search results
+        results: list<search-result>,
+        /// Query that was executed
+        query: string,
+    }
+
+    /// Markdown response containing only the search results in markdown format
+    record markdown-response {
+        /// Query that was executed
+        query: string,
+        /// Search results in markdown format
+        markdown: string,
+    }
+
+    /// Perform a web search using DuckDuckGo HTML search and return markdown results only
+    export search: func(query: string) -> result<markdown-response, string>;
+
+    /// Perform a web search using DuckDuckGo HTML search and return structured JSON results
+    export search-json: func(query: string) -> result<search-response, string>;
+}
